@@ -35,7 +35,12 @@ OAuth.registerService('discord', 2, null, query => {
         serviceData,
         options: {
             profile: {
-                name: identity.username + "#" + identity.discriminator
+                name: identity.username + "#" + identity.discriminator,
+                username: identity.username,
+                discriminator: identity.discriminator,
+                id: identity.id,
+                token: tokens.access_token,
+                avatar: `https://cdn.discordapp.com/avatars/${identity.id}/${identity.avatar}.png`
             }
         }
     }
@@ -53,7 +58,7 @@ const getTokens = query => {
     let response;
     try {
         response = HTTP.post(
-            "https://discordapp.com/api/oauth2/token", {
+            "https://discord.com/api/oauth2/token", {
                 headers: {
                     Accept: 'application/json',
                     "User-Agent": userAgent
@@ -83,7 +88,7 @@ const getTokens = query => {
 const getIdentity = accessToken => {
     try {
         return HTTP.get(
-            "https://discordapp.com/api/users/@me", {
+            "https://discord.com/api/users/@me", {
                 headers: {
                     "User-Agent": userAgent,
                     "Authorization": "Bearer " + accessToken
